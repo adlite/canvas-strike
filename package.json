@@ -1,0 +1,36 @@
+{
+  "name": "canvas-strike",
+  "version": "0.0.1",
+  "description": "Open source platformer game based on HTML5 canvas and written in TypeScript",
+  "main": "webpack.prod.js",
+  "scripts": {
+    "dev": "webpack-dev-server --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adlite/canvas-strike.git"
+  },
+  "keywords": [
+    "typescript",
+    "canvas",
+    "game-development",
+    "game-2d"
+  ],
+  "author": "adlite",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/adlite/canvas-strike/issues"
+  },
+  "homepage": "https://github.com/adlite/canvas-strike#readme",
+  "devDependencies": {
+    "clean-webpack-plugin": "^0.1.17",
+    "file-loader": "^1.1.6",
+    "html-webpack-plugin": "^2.30.1",
+    "ts-loader": "^3.2.0",
+    "typescript": "^2.6.2",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.9.7",
+    "webpack-merge": "^4.1.1"
+  }
+}
