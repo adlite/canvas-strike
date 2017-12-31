@@ -33,13 +33,13 @@ export abstract class Shape {
         let by1 = shape.y;
         let by2 = shape.y + shape.height;
 
-        let hitHoriz: boolean = false;
-        let hitVert: boolean = false;
+        let hitHoriz = false;
+        let hitVert = false;
 
         if ((bx1 >= ax1 && bx1 <= ax2) || (bx2 >= ax1 && bx2 <= ax2)) {
             hitHoriz = true;
         }
-        if ((by1 >= ay1 && by1 <= ay2) || (bx2 >= ay1 && by2 <= ay2)) {
+        if ((by1 >= ay1 && by1 <= ay2) || (by2 >= ay1 && by2 <= ay2)) {
             hitVert = true;
         }
 
