@@ -1,2 +1,3 @@
-let test: string = 'TEST TypeScript';
-console.log(test);
+import {App} from "./classes/App";
+
+let app = new App('canvas-strike', 1000, 600);
