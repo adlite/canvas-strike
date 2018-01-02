@@ -1,3 +1,4 @@
 import {App} from "./classes/App";
 
-let app = new App('canvas-strike', 1000, 600);
+window['CanvasStrike'] = App;
+new App();

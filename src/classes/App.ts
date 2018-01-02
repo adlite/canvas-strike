@@ -1,40 +1,48 @@
 import {Shape} from "./Shape";
 import {Loop} from "./Loop";
+import {ISettings} from "../interfaces/index";
+import settings from "../settings";
+import {Grid} from "./Grid";
+import {Map} from "./Map";
+import {mapBox} from "../maps";
 
 export class App {
+    static settings: ISettings = settings;
     static canvas: HTMLCanvasElement;
     static ctx: CanvasRenderingContext2D;
-    private loop: Loop = new Loop(() => this.render(), 25);
-    shapes: Shape[] = [];
+    public loop: Loop = new Loop(() => this.render(), 25);
+    private shapes: Shape[] = [];
 
-    constructor(canvasID: string, width: number, height: number) {
-        this.createDomNode(canvasID, width, height);
+    constructor() {
+        this.createDomNode();
         this.createShapes();
         this.loop.start();
     }
 
-    private createDomNode(canvasID: string, width: number, height: number): void {
+    private createDomNode(): void {
         App.canvas = document.createElement('canvas');
-        App.canvas.setAttribute('id', canvasID);
-        App.canvas.setAttribute('width', width.toString());
-        App.canvas.setAttribute('height', height.toString());
+        App.canvas.setAttribute('id', App.settings.canvasID);
+        App.canvas.setAttribute('width', App.settings.canvasWidth.toString());
+        App.canvas.setAttribute('height', App.settings.canvasHeight.toString());
         App.ctx = App.canvas.getContext('2d');
 
-        if (document.getElementById(canvasID) === null) {
+        if (document.getElementById(App.settings.canvasID) === null) {
             document.body.appendChild(App.canvas);
         } else {
-            throw new Error(`Element with id '${canvasID}' is already exists`);
+            throw new Error(`Element with id '${App.settings.canvasID}' is already exists`);
         }
     }
 
     private createShapes(): void {
         this.shapes.push(
-            // create shapes here
+            new Map(mapBox)
         );
     }
 
     static clearCanvas(): void {
-        App.ctx.clearRect(0, 0, App.canvas.width, App.canvas.height);
+        if (App.ctx) {
+            App.ctx.clearRect(0, 0, App.canvas.width, App.canvas.height);
+        }
     }
 
     public render(): void {
@@ -42,7 +50,9 @@ export class App {
         App.clearCanvas();
 
         //elements' renders
+        if (App.settings.debugMode) Grid.render();
         for (let shape of this.shapes) {
+            if (App.settings.debugMode) shape.renderShapeRect();
             shape.render();
         }
     }

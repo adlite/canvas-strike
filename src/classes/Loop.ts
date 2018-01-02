@@ -13,12 +13,12 @@ export class Loop {
         }
     }
 
-    start() {
+    start(): void {
         this.intervalID = setInterval(() => this.renderFunc(), 1000 / this.fps);
         this.allowToLog = true;
     }
 
-    stop() {
+    stop(): void {
         if (this.intervalID !== null) {
             clearInterval(this.intervalID);
             this.intervalID = null;
