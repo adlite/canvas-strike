@@ -3,32 +3,19 @@ import {App} from "./App";
 import {WallType} from "../enums";
 import {Grid} from "./Grid";
 
-export abstract class Wall extends Shape {
+export class Wall extends Shape {
+    readonly type: WallType;
+    readonly grid: Grid;
 
-    constructor(public grid: Grid, x: number, y: number, width: number, height: number) {
-        super(x, y, width, height);
+    constructor(grid: Grid, type: WallType, x: number, y: number, width: number, height: number) {
+        //all values in grid evals
+        super(grid.toPixels(x), grid.toPixels(y), grid.toPixels(width), grid.toPixels(height));
+        this.grid = grid;
+        this.type = type;
     }
 
     render() {
         super.render();
         App.ctx.fillRect(this.x, this.y, this.width, this.height);
-    }
-}
-
-//Horizontal map wall
-export class HWall extends Wall {
-    readonly type: WallType = WallType.HORIZONTAL;
-
-    constructor(grid: Grid, row: number, from: number, to: number) {
-        super(grid, grid.toPixels(from), grid.toPixels(row), grid.toPixels(to - from), grid.cellSize);
-    }
-}
-
-//Vertical map wall
-export class VWall extends Wall {
-    readonly type: WallType = WallType.VERTICAL;
-
-    constructor(grid: Grid, column: number, from: number, to: number) {
-        super(grid, grid.toPixels(column), grid.toPixels(from), grid.cellSize, grid.toPixels(to - from));
     }
 }

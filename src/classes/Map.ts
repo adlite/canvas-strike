@@ -2,7 +2,7 @@ import {Shape} from "./Shape";
 import {IMapDescr} from "../interfaces/index";
 import {Grid} from "./Grid";
 import {App} from "./App";
-import {HWall, VWall, Wall} from "./Wall";
+import {Wall} from "./Wall";
 import {Player} from "./Player";
 import {Settings} from "../settings";
 import {WallType} from "../enums/index";
@@ -24,11 +24,7 @@ export class Map extends Shape {
 
     private createWalls() {
         for (let wall of this.descr.walls) {
-            if (wall.type === WallType.HORIZONTAL) {
-                this.walls.push(new HWall(this.grid, wall[0], wall[1], wall[2]));
-            } else if (wall.type === WallType.VERTICAL) {
-                this.walls.push(new VWall(this.grid, wall[0], wall[1], wall[2]));
-            }
+            this.walls.push(new Wall(this.grid, wall.type, wall.cells[0], wall.cells[1], wall.cells[2], wall.cells[3]));
         }
     }
 

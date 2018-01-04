@@ -1,5 +1,4 @@
 import {App} from "./App";
-import {Settings} from "../settings";
 import {Shape} from "./Shape";
 
 export class Grid extends Shape {
@@ -10,12 +9,12 @@ export class Grid extends Shape {
     constructor(cellSize: number) {
         super(0, 0, App.canvas.width, App.canvas.height);
         this.cellSize = cellSize;
-        this.rowsCount = App.canvas.width / this.cellSize;
-        this.columnsCount = App.canvas.height / this.cellSize;
+        this.columnsCount = App.canvas.width / cellSize;
+        this.rowsCount = App.canvas.height / cellSize;
     }
 
     toPixels(cellItem: number): number {
-        return cellItem * this.cellSize - this.cellSize;
+        return cellItem * this.cellSize;
     }
 
     render() {
