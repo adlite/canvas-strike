@@ -6,6 +6,7 @@ export interface ISettings {
     canvasHeight: number;
     debugMode: boolean;
     gridSize: number;
+    fps: number;
 }
 
 export interface IMapDescr {

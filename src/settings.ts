@@ -1,11 +1,10 @@
 import {ISettings} from "./interfaces/index";
 
-let settings: ISettings = {
+export let Settings: ISettings = {
     canvasID: 'canvas-strike',
     canvasWidth: 1000,
     canvasHeight: 600,
     debugMode: true,
-    gridSize: 20
+    gridSize: 20,
+    fps: 25
 };
-
-export default settings;

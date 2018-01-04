@@ -1,31 +1,40 @@
 import {App} from "./App";
+import {Settings} from "../settings";
+import {Shape} from "./Shape";
 
-export class Grid {
-    static readonly cellSize: number = App.settings.gridSize;
-    static readonly rowsCount: number = App.canvas.width / Grid.cellSize;
-    static readonly columnsCount: number = App.canvas.height / Grid.cellSize;
+export class Grid extends Shape {
+    readonly cellSize: number;
+    readonly rowsCount: number;
+    readonly columnsCount: number;
 
-    static toPixels(cellItem: number): number {
-        return cellItem * Grid.cellSize - Grid.cellSize;
+    constructor(cellSize: number) {
+        super(0, 0, App.canvas.width, App.canvas.height);
+        this.cellSize = cellSize;
+        this.rowsCount = App.canvas.width / this.cellSize;
+        this.columnsCount = App.canvas.height / this.cellSize;
     }
 
-    static render() {
+    toPixels(cellItem: number): number {
+        return cellItem * this.cellSize - this.cellSize;
+    }
+
+    render() {
         App.ctx.strokeStyle = '#ccc';
         App.ctx.lineWidth = 0.5;
 
         //draw vertical lines
-        for (let x = 1; x < Grid.columnsCount; x++) {
+        for (let x = 1; x < this.columnsCount; x++) {
             App.ctx.beginPath();
-            App.ctx.moveTo(x * Grid.cellSize, 0);
-            App.ctx.lineTo(x * Grid.cellSize, App.canvas.height);
+            App.ctx.moveTo(x * this.cellSize, 0);
+            App.ctx.lineTo(x * this.cellSize, App.canvas.height);
             App.ctx.stroke();
         }
 
         //draw horizontal lines
-        for (let y = 1; y < Grid.rowsCount; y++) {
+        for (let y = 1; y < this.rowsCount; y++) {
             App.ctx.beginPath();
-            App.ctx.moveTo(0, y * Grid.cellSize);
-            App.ctx.lineTo(App.canvas.width, y * Grid.cellSize);
+            App.ctx.moveTo(0, y * this.cellSize);
+            App.ctx.lineTo(App.canvas.width, y * this.cellSize);
             App.ctx.stroke();
         }
     }

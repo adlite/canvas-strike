@@ -1,16 +1,13 @@
 import {Shape} from "./Shape";
 import {Loop} from "./Loop";
-import {ISettings} from "../interfaces/index";
-import settings from "../settings";
-import {Grid} from "./Grid";
+import {Settings} from "../settings";
 import {Map} from "./Map";
 import {mapBox} from "../maps";
 
 export class App {
-    static settings: ISettings = settings;
     static canvas: HTMLCanvasElement;
     static ctx: CanvasRenderingContext2D;
-    public loop: Loop = new Loop(() => this.render(), 25);
+    public loop: Loop = new Loop(() => this.render(), Settings.fps);
     private shapes: Shape[] = [];
 
     constructor() {
@@ -21,15 +18,15 @@ export class App {
 
     private createDomNode(): void {
         App.canvas = document.createElement('canvas');
-        App.canvas.setAttribute('id', App.settings.canvasID);
-        App.canvas.setAttribute('width', App.settings.canvasWidth.toString());
-        App.canvas.setAttribute('height', App.settings.canvasHeight.toString());
+        App.canvas.setAttribute('id', Settings.canvasID);
+        App.canvas.setAttribute('width', Settings.canvasWidth.toString());
+        App.canvas.setAttribute('height', Settings.canvasHeight.toString());
         App.ctx = App.canvas.getContext('2d');
 
-        if (document.getElementById(App.settings.canvasID) === null) {
+        if (document.getElementById(Settings.canvasID) === null) {
             document.body.appendChild(App.canvas);
         } else {
-            throw new Error(`Element with id '${App.settings.canvasID}' is already exists`);
+            throw new Error(`Element with id '${Settings.canvasID}' is already exists`);
         }
     }
 
@@ -50,9 +47,7 @@ export class App {
         App.clearCanvas();
 
         //elements' renders
-        if (App.settings.debugMode) Grid.render();
         for (let shape of this.shapes) {
-            if (App.settings.debugMode) shape.renderShapeRect();
             shape.render();
         }
     }
