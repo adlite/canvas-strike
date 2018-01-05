@@ -70,8 +70,8 @@ export abstract class ActiveShape extends Shape {
     vy: number = 1; //velocity y
     ax: number = 1; //acceleration x
     ay: number = 1; //acceleration y
-    dirX: Direction;
-    dirY: Direction;
+    dirX: Direction = Direction.RIGHT;
+    dirY: Direction = Direction.UP;
     isMovingX: boolean = false;
     isMovingY: boolean = false;
 
@@ -102,9 +102,8 @@ export abstract class ActiveShape extends Shape {
         this.isMovingY = false;
     }
 
-    render() {
-        super.render();
-
+    //set next moving values before render
+    protected setMoving() {
         if (this.isMovingX) {
             this.vx *= this.ax; //set x acceleration
             if (this.dirX === Direction.LEFT) {
@@ -122,5 +121,31 @@ export abstract class ActiveShape extends Shape {
                 this.y += this.vy;
             }
         }
+    }
+
+    //reset next moving values before render
+    protected resetMoving() {
+        if (this.isMovingX) {
+            this.vx /= this.ax; //set x acceleration
+            if (this.dirX === Direction.LEFT) {
+                this.x += this.vx;
+            } else if (this.dirX === Direction.RIGHT) {
+                this.x -= this.vx;
+            }
+        }
+
+        if (this.isMovingY) {
+            this.vy /= this.ay; //set y acceleration
+            if (this.dirY === Direction.UP) {
+                this.y += this.vy;
+            } else if (this.dirY === Direction.DOWN) {
+                this.y -= this.vy;
+            }
+        }
+    }
+
+    render() {
+        super.render();
+        this.setMoving();
     }
 }

@@ -11,7 +11,7 @@ export class Map extends Shape {
     descr: IMapDescr;
     player1: Player;
     player2: Player;
-    shapes: Shape[] = [];
+    walls: Wall[] = [];
     grid: Grid = new Grid(Settings.gridSize);
 
     constructor(descr: IMapDescr) {
@@ -23,14 +23,14 @@ export class Map extends Shape {
 
     private createShapes() {
         //walls
-        for (let shape of this.descr.walls) {
-            this.shapes.push(new Wall(
+        for (let wall of this.descr.walls) {
+            this.walls.push(new Wall(
                 this.grid,
-                shape.type,
-                shape.cells[0],
-                shape.cells[1],
-                shape.cells[2],
-                shape.cells[3]
+                wall.type,
+                wall.cells[0],
+                wall.cells[1],
+                wall.cells[2],
+                wall.cells[3]
             ));
         }
 
@@ -39,9 +39,8 @@ export class Map extends Shape {
         let player1Y = this.grid.toPixels(this.descr.player1StartPos[1]);
         let player2X = this.grid.toPixels(this.descr.player2StartPos[0]);
         let player2Y = this.grid.toPixels(this.descr.player2StartPos[1]);
-        this.player1 = new Player(player1X, player1Y);
-        this.player2 = new Player(player2X, player2Y);
-        this.shapes.push(this.player1, this.player2);
+        this.player1 = new Player(this, player1X, player1Y);
+        this.player2 = new Player(this, player2X, player2Y);
     }
 
     private initHandlers() {
@@ -76,9 +75,17 @@ export class Map extends Shape {
         if (Settings.debugMode) this.grid.render();
 
         //render walls
-        for (let shape of this.shapes) {
-            shape.render();
-            if (Settings.debugMode) shape.renderShapeRect();
+        for (let wall of this.walls) {
+            wall.render();
+            if (Settings.debugMode) wall.renderShapeRect();
+        }
+
+        //render players
+        this.player1.render();
+        this.player2.render();
+        if (Settings.debugMode) {
+            this.player1.renderShapeRect();
+            this.player2.renderShapeRect();
         }
     }
 }

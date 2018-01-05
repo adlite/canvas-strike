@@ -22,5 +22,13 @@ export let mapBox: IMapDescr = {
             type: WallType.VERTICAL,
             cells: [49, 1, 1, 28]
         },
+        { //flying wall
+            type: WallType.VERTICAL,
+            cells: [20, 20, 1, 5]
+        },
+        { //hit wall
+            type: WallType.VERTICAL,
+            cells: [40, 25, 1, 4]
+        },
     ]
 };
