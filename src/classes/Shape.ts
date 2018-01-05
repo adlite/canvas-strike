@@ -9,6 +9,8 @@ export abstract class Shape {
     stroke: string = '#ccc';
     fill: string = '#464646';
     opacity: number = 1;
+    lineWidth: number = 1;
+    lineCap: string = 'butt';
 
     constructor(x: number, y: number, width: number, height: number) {
         this.x = x;
@@ -47,6 +49,8 @@ export abstract class Shape {
     renderShapeRect(): void {
         App.ctx.strokeStyle = 'red';
         App.ctx.globalAlpha = 1;
+        App.ctx.lineWidth = 1;
+        App.ctx.lineCap = 'butt';
         App.ctx.strokeRect(this.x, this.y, this.width, this.height);
     }
 
@@ -54,6 +58,8 @@ export abstract class Shape {
         App.ctx.strokeStyle = this.stroke;
         App.ctx.fillStyle = this.fill;
         App.ctx.globalAlpha = this.opacity;
+        App.ctx.lineWidth = this.lineWidth;
+        App.ctx.lineCap = this.lineCap;
     }
 }
 

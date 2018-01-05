@@ -5,27 +5,41 @@ import {App} from "./App";
 import {Wall} from "./Wall";
 import {Player} from "./Player";
 import {Settings} from "../settings";
-import {WallType} from "../enums/index";
 
 export class Map extends Shape {
-    name: string;
     descr: IMapDescr;
     player1: Player;
     player2: Player;
-    walls: Wall[] = [];
+    shapes: Shape[] = [];
     grid: Grid = new Grid(Settings.gridSize);
 
     constructor(descr: IMapDescr) {
         super(0, 0, App.canvas.width, App.canvas.height);
         this.descr = descr;
-        this.name = descr.name;
-        this.createWalls();
+        this.createShapes();
     }
 
-    private createWalls() {
-        for (let wall of this.descr.walls) {
-            this.walls.push(new Wall(this.grid, wall.type, wall.cells[0], wall.cells[1], wall.cells[2], wall.cells[3]));
+    private createShapes() {
+        //walls
+        for (let shape of this.descr.walls) {
+            this.shapes.push(new Wall(
+                this.grid,
+                shape.type,
+                shape.cells[0],
+                shape.cells[1],
+                shape.cells[2],
+                shape.cells[3]
+            ));
         }
+
+        //players
+        let player1X = this.grid.toPixels(this.descr.player1StartPos[0]);
+        let player1Y = this.grid.toPixels(this.descr.player1StartPos[1]);
+        let player2X = this.grid.toPixels(this.descr.player2StartPos[0]);
+        let player2Y = this.grid.toPixels(this.descr.player2StartPos[1]);
+        this.player1 = new Player(player1X, player1Y);
+        this.player2 = new Player(player2X, player2Y);
+        this.shapes.push(this.player1, this.player2);
     }
 
     render() {
@@ -33,8 +47,9 @@ export class Map extends Shape {
         if (Settings.debugMode) this.grid.render();
 
         //render walls
-        for (let wall of this.walls) {
-            wall.render();
+        for (let shape of this.shapes) {
+            shape.render();
+            if (Settings.debugMode) shape.renderShapeRect();
         }
     }
 }
