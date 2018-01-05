@@ -47,6 +47,7 @@ export class Map extends Shape {
         document.body.addEventListener('keydown', (e) => {
             switch (e.keyCode) {
                 case Key.W:
+                    this.player1.jump();
                     break;
                 case Key.A:
                     this.player1.moveX(Direction.LEFT);

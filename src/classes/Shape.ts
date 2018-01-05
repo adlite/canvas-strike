@@ -71,13 +71,9 @@ export abstract class ActiveShape extends Shape {
     ax: number = 1; //acceleration x
     ay: number = 1; //acceleration y
     dirX: Direction = Direction.RIGHT;
-    dirY: Direction = Direction.UP;
+    dirY: Direction = Direction.DOWN;
     isMovingX: boolean = false;
     isMovingY: boolean = false;
-
-    constructor(x: number, y: number, width: number, height: number) {
-        super(x, y, width, height);
-    }
 
     moveX(dir: Direction) {
         this.isMovingX = true;
@@ -104,6 +100,11 @@ export abstract class ActiveShape extends Shape {
 
     //set next moving values before render
     protected setMoving() {
+        this.setMovingX();
+        this.setMovingY();
+    }
+
+    protected setMovingX() {
         if (this.isMovingX) {
             this.vx *= this.ax; //set x acceleration
             if (this.dirX === Direction.LEFT) {
@@ -112,7 +113,9 @@ export abstract class ActiveShape extends Shape {
                 this.x += this.vx;
             }
         }
+    }
 
+    protected setMovingY() {
         if (this.isMovingY) {
             this.vy *= this.ay; //set y acceleration
             if (this.dirY === Direction.UP) {
@@ -125,17 +128,24 @@ export abstract class ActiveShape extends Shape {
 
     //reset next moving values before render
     protected resetMoving() {
+        this.resetMovingX();
+        this.resetMovingY();
+    }
+
+    protected resetMovingX() {
         if (this.isMovingX) {
-            this.vx /= this.ax; //set x acceleration
+            this.vx /= this.ax; //reset x acceleration
             if (this.dirX === Direction.LEFT) {
                 this.x += this.vx;
             } else if (this.dirX === Direction.RIGHT) {
                 this.x -= this.vx;
             }
         }
+    }
 
+    protected resetMovingY() {
         if (this.isMovingY) {
-            this.vy /= this.ay; //set y acceleration
+            this.vy /= this.ay; //reset y acceleration
             if (this.dirY === Direction.UP) {
                 this.y += this.vy;
             } else if (this.dirY === Direction.DOWN) {
@@ -144,8 +154,8 @@ export abstract class ActiveShape extends Shape {
         }
     }
 
-    render() {
-        super.render();
-        this.setMoving();
-    }
+    // render(): void {
+    //     super.render();
+    //     this.setMoving();
+    // }
 }
