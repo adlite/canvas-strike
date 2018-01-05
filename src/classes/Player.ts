@@ -9,7 +9,7 @@ export class Player extends ActiveShape {
     defaultVX: number = 8;
     defaultVY: number = 20;
 
-    constructor(private readonly map: Map, x: number, y: number) {
+    constructor(x: number, y: number) {
         super(x, y - 79, 40, 78); // minus values to prevent walls collisions
         //props
         this.vx = this.defaultVX;
@@ -41,22 +41,12 @@ export class Player extends ActiveShape {
         this.vy = this.defaultVY;
     }
 
-    //check if player going to hit one of the map walls
-    private hitWallX(): boolean {
-        for (let wall of this.map.walls) {
-            if (wall.type === WallType.VERTICAL) {
-                if (wall.hit(this)) return true;
-            }
-        }
-        return false;
-    }
-
-    private checkWallOnNextXStep(): void {
+    private checkWallsOnNextXStep(walls: Wall[]): void {
         let result = false;
         let hittedWall: Wall;
 
         this.setMovingX();
-        for (let wall of this.map.walls) {
+        for (let wall of walls) {
             if (wall.hit(this)) {
                 hittedWall = wall;
                 result = true;
@@ -69,12 +59,12 @@ export class Player extends ActiveShape {
         }
     }
 
-    private checkWallOnNextYStep(): void {
+    private checkWallsOnNextYStep(walls: Wall[]): void {
         let result = false;
         let hittedWall: Wall;
 
         this.setMovingY();
-        for (let wall of this.map.walls) {
+        for (let wall of walls) {
             if (wall.hit(this)) {
                 hittedWall = wall;
                 result = true;
@@ -94,34 +84,15 @@ export class Player extends ActiveShape {
         }
     }
 
-    render(): void {
+    render(walls: Wall[]): void {
         super.render();
-
-        this.checkWallOnNextXStep();
-        this.checkWallOnNextYStep();
-
-        // if (this.inAir) {
-        //     if (this.dirY === Direction.DOWN && this.checkWallOnNextYStep()) {
-        //         this.land();
-        //     }
-        // } else {
-        //     if (!this.checkWallOnNextYStep()) {
-        //         this.fall();
-        //     }
-        // }
+        
+        this.checkWallsOnNextXStep(walls);
+        this.checkWallsOnNextYStep(walls);
 
         if (this.vy < 1 && this.dirY === Direction.UP) { //gravity
             this.fall();
         }
-        //
-        // if (this.hitWallX()) {
-        //     this.resetMoving();
-        //     this.stopX();
-        // }
-        //
-        // if (this.hitWallOnNextYStep()) {
-        //     this.stopY();
-        // }
 
         let headRadius = 16;
         let bodyHeight = 24;

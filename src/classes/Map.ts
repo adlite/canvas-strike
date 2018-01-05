@@ -39,8 +39,8 @@ export class Map extends Shape {
         let player1Y = this.grid.toPixels(this.descr.player1StartPos[1]);
         let player2X = this.grid.toPixels(this.descr.player2StartPos[0]);
         let player2Y = this.grid.toPixels(this.descr.player2StartPos[1]);
-        this.player1 = new Player(this, player1X, player1Y);
-        this.player2 = new Player(this, player2X, player2Y);
+        this.player1 = new Player(player1X, player1Y);
+        this.player2 = new Player(player2X, player2Y);
     }
 
     private initHandlers() {
@@ -82,8 +82,8 @@ export class Map extends Shape {
         }
 
         //render players
-        this.player1.render();
-        this.player2.render();
+        this.player1.render(this.walls);
+        this.player2.render(this.walls);
         if (Settings.debugMode) {
             this.player1.renderShapeRect();
             this.player2.renderShapeRect();

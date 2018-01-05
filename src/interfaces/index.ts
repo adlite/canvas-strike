@@ -11,12 +11,13 @@ export interface ISettings {
 
 export interface IMapDescr {
     name: string;
-    player1StartPos: [number, number], //x, y in grid evals
-    player2StartPos: [number, number], //x, y in grid evals
+    player1StartPos: [number, number]; //x, y in grid evals
+    player2StartPos: [number, number]; //x, y in grid evals
     walls: IWallDescr[];
 }
 
 export interface IWallDescr {
-    type: WallType,
-    cells: [number, number, number]
+    name?: string; //for debug
+    type: WallType;
+    cells: [number, number, number, number];
 }

@@ -56,7 +56,7 @@ export abstract class Shape {
         App.ctx.strokeRect(this.x, this.y, this.width, this.height);
     }
 
-    render(): void {
+    render(...args): void {
         App.ctx.strokeStyle = this.stroke;
         App.ctx.fillStyle = this.fill;
         App.ctx.globalAlpha = this.opacity;
@@ -153,9 +153,4 @@ export abstract class ActiveShape extends Shape {
             }
         }
     }
-
-    // render(): void {
-    //     super.render();
-    //     this.setMoving();
-    // }
 }
