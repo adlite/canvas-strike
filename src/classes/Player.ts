@@ -6,7 +6,7 @@ import {Wall} from "./Wall";
 
 export class Player extends ActiveShape {
     inAir: boolean = false;
-    defaultVX: number = 6;
+    defaultVX: number = 8;
     defaultVY: number = 20;
 
     constructor(private readonly map: Map, x: number, y: number) {
@@ -51,6 +51,24 @@ export class Player extends ActiveShape {
         return false;
     }
 
+    private checkWallOnNextXStep(): void {
+        let result = false;
+        let hittedWall: Wall;
+
+        this.setMovingX();
+        for (let wall of this.map.walls) {
+            if (wall.hit(this)) {
+                hittedWall = wall;
+                result = true;
+                break;
+            }
+        }
+
+        if (result) {
+            this.resetMovingX();
+        }
+    }
+
     private checkWallOnNextYStep(): void {
         let result = false;
         let hittedWall: Wall;
@@ -79,6 +97,7 @@ export class Player extends ActiveShape {
     render(): void {
         super.render();
 
+        this.checkWallOnNextXStep();
         this.checkWallOnNextYStep();
 
         // if (this.inAir) {
