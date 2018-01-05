@@ -6,5 +6,5 @@ export let Settings: ISettings = {
     canvasHeight: 600,
     debugMode: true,
     gridSize: 20,
-    fps: 25
+    fps: 40
 };

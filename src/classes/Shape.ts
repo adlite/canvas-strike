@@ -47,10 +47,12 @@ export abstract class Shape {
 
     //render shape rect borders for debug purposes
     renderShapeRect(): void {
+        //set debug styles
         App.ctx.strokeStyle = 'red';
         App.ctx.globalAlpha = 1;
         App.ctx.lineWidth = 1;
         App.ctx.lineCap = 'butt';
+        //render shape
         App.ctx.strokeRect(this.x, this.y, this.width, this.height);
     }
 

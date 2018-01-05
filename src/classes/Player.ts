@@ -5,9 +5,11 @@ export class Player extends ActiveShape {
 
     constructor(x: number, y: number) {
         super(x, y - 80, 40, 80);
+        //props
+        this.vx = 5;
+        //styles
         this.opacity = 0.9;
         this.lineWidth = 3;
-        this.lineCap = 'round';
         this.stroke = '#464646';
     }
 

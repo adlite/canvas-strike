@@ -5,6 +5,7 @@ import {App} from "./App";
 import {Wall} from "./Wall";
 import {Player} from "./Player";
 import {Settings} from "../settings";
+import {Direction, Key} from "../enums/index";
 
 export class Map extends Shape {
     descr: IMapDescr;
@@ -17,6 +18,7 @@ export class Map extends Shape {
         super(0, 0, App.canvas.width, App.canvas.height);
         this.descr = descr;
         this.createShapes();
+        this.initHandlers();
     }
 
     private createShapes() {
@@ -40,6 +42,33 @@ export class Map extends Shape {
         this.player1 = new Player(player1X, player1Y);
         this.player2 = new Player(player2X, player2Y);
         this.shapes.push(this.player1, this.player2);
+    }
+
+    private initHandlers() {
+        document.body.addEventListener('keydown', (e) => {
+            switch (e.keyCode) {
+                case Key.W:
+                    break;
+                case Key.A:
+                    this.player1.moveX(Direction.LEFT);
+                    break;
+                case Key.S:
+                    break;
+                case Key.D:
+                    this.player1.moveX(Direction.RIGHT);
+                    break;
+            }
+        });
+        document.body.addEventListener('keyup', (e) => {
+            switch (e.keyCode) {
+                case Key.A:
+                    this.player1.stopX();
+                    break;
+                case Key.D:
+                    this.player1.stopX();
+                    break;
+            }
+        });
     }
 
     render() {
