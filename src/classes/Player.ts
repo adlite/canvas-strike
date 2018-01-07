@@ -4,16 +4,20 @@ import {Direction} from "../enums/index";
 import {Wall} from "./Wall";
 
 export class Player extends ActiveShape {
-    defaultVX: number = 8;
-    defaultVY: number = 20;
+    static readonly DEFAULT_VX: number = 8;
+    static readonly DEFAULT_JUMP_VY: number = 20;
+    static readonly DEFAULT_JUMP_AY: number = 0.82;
+    static readonly DEFAULT_GRAVITY_VY: number = 6;
+    static readonly DEFAULT_GRAVITY_AY: number = 1.35;
+    static readonly MAX_GRAVITY_VY: number = 25;
     isJumping: boolean = false;
     inAir: boolean = false;
 
     constructor(x: number, y: number) {
         super(x, y - 79, 40, 78); // minus values to prevent walls collisions
         //props
-        this.vx = this.defaultVX;
-        this.vy = this.defaultVY;
+        this.vx = Player.DEFAULT_VX;
+        this.vy = Player.DEFAULT_GRAVITY_VY;
         //styles
         this.opacity = 0.9;
         this.lineWidth = 3;
@@ -24,7 +28,8 @@ export class Player extends ActiveShape {
         if (!this.inAir) {
             this.isJumping = true;
             this.inAir = true;
-            this.ay = 0.8;
+            this.vy = Player.DEFAULT_JUMP_VY;
+            this.ay = Player.DEFAULT_JUMP_AY;
             this.moveY(Direction.UP);
         }
     }
@@ -35,7 +40,7 @@ export class Player extends ActiveShape {
 
     fall() {
         this.inAir = true;
-        this.ay = 1.35;
+        this.ay = Player.DEFAULT_GRAVITY_AY;
         this.moveY(Direction.DOWN);
     }
 
@@ -43,7 +48,7 @@ export class Player extends ActiveShape {
         this.inAir = false;
         this.stopY();
         this.y = onWall.y - this.height - 1;
-        this.vy = this.defaultVY;
+        this.vy = Player.DEFAULT_GRAVITY_VY;
     }
 
     private checkWallsOnNextXStep(walls: Wall[]): void {
@@ -68,7 +73,9 @@ export class Player extends ActiveShape {
         let result = false;
         let hittedWall: Wall;
 
-        this.setMovingY();
+        //y++ is to check wall under player's feet while he is being on the ground
+        this.inAir ? this.setMovingY() : this.y++;
+
         for (let wall of walls) {
             if (wall.hit(this)) {
                 hittedWall = wall;
@@ -86,6 +93,13 @@ export class Player extends ActiveShape {
                 } else if (this.dirY === Direction.UP) {
                     this.fall();
                 }
+            } else {
+                this.y--;
+            }
+        } else {
+            if (!this.inAir) {
+                this.vy = Player.DEFAULT_GRAVITY_VY;
+                this.fall();
             }
         }
     }
@@ -96,9 +110,15 @@ export class Player extends ActiveShape {
         this.checkWallsOnNextXStep(walls);
         this.checkWallsOnNextYStep(walls);
 
-        if (this.vy < 1 && this.dirY === Direction.UP) { //gravity
+        //gravity
+        if (this.vy < 1 && this.dirY === Direction.UP) {
             this.fall();
+        } else if (this.vy > Player.MAX_GRAVITY_VY && this.dirY === Direction.DOWN) {
+            this.vy = Player.MAX_GRAVITY_VY;
+            this.ay = 1;
         }
+
+        if (this.inAir) console.log(this.vy.toFixed(3));
 
         let headRadius = 16;
         let bodyHeight = 24;
