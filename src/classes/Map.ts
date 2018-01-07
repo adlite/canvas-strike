@@ -30,7 +30,8 @@ export class Map extends Shape {
                 wall.cells[0],
                 wall.cells[1],
                 wall.cells[2],
-                wall.cells[3]
+                wall.cells[3],
+                wall.name
             ));
         }
 

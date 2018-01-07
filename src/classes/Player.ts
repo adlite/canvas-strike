@@ -23,7 +23,7 @@ export class Player extends ActiveShape {
     jump() {
         if (!this.inAir) {
             this.inAir = true;
-            this.ay = 0.75;
+            this.ay = 0.8;
             this.moveY(Direction.UP);
         }
     }

@@ -7,7 +7,7 @@ export let mapBox: IMapDescr = {
     player2StartPos: [8, 29],
     walls: [
         {
-            name: 'top wall',
+            name: 'top wall', //just for debug
             type: WallType.HORIZONTAL,
             cells: [0, 0, 50, 1]
         },
@@ -29,7 +29,7 @@ export let mapBox: IMapDescr = {
         {
             name: 'coridor wall',
             type: WallType.HORIZONTAL,
-            cells: [25, 24, 12, 1]
+            cells: [5, 24, 12, 1]
         },
         {
             name: 'flying wall',
@@ -37,9 +37,29 @@ export let mapBox: IMapDescr = {
             cells: [20, 20, 1, 3]
         },
         {
-            name: 'hit wall',
+            name: 'stairs wall fundament',
             type: WallType.HORIZONTAL,
             cells: [40, 27, 9, 2]
+        },
+        {
+            name: 'stairs 1 wall',
+            type: WallType.HORIZONTAL,
+            cells: [42, 25, 2, 2]
+        },
+        {
+            name: 'stairs 2 wall',
+            type: WallType.HORIZONTAL,
+            cells: [44, 23, 2, 4]
+        },
+        {
+            name: 'stairs 3 wall',
+            type: WallType.HORIZONTAL,
+            cells: [46, 21, 2, 6]
+        },
+        {
+            name: 'stairs 4 wall',
+            type: WallType.HORIZONTAL,
+            cells: [47, 18, 2, 9]
         },
     ]
 };

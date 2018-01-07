@@ -21,28 +21,32 @@ export abstract class Shape {
 
     //check if this shape is colliding with other
     hit(shape: Shape): boolean {
-        //this angle points
-        let ax1 = this.x;
-        let ax2 = this.x + this.width;
-        let ay1 = this.y;
-        let ay2 = this.y + this.height;
-        //other shape angle points
-        let bx1 = shape.x;
-        let bx2 = shape.x + shape.width;
-        let by1 = shape.y;
-        let by2 = shape.y + shape.height;
 
-        let hitHoriz = false;
-        let hitVert = false;
+        //check if shape2 X-points are between shape1 X-points
+        let hitX = function (shape1: Shape, shape2: Shape): boolean {
+            //shape1 x angle points
+            let ax1 = shape1.x;
+            let ax2 = shape1.x + shape1.width;
+            //shape2 x shape angle points
+            let bx1 = shape2.x;
+            let bx2 = shape2.x + shape2.width;
 
-        if ((bx1 >= ax1 && bx1 <= ax2) || (bx2 >= ax1 && bx2 <= ax2)) {
-            hitHoriz = true;
-        }
-        if ((by1 >= ay1 && by1 <= ay2) || (by2 >= ay1 && by2 <= ay2)) {
-            hitVert = true;
-        }
+            return (bx1 >= ax1 && bx1 <= ax2) || (bx2 >= ax1 && bx2 <= ax2);
+        };
 
-        return hitVert && hitHoriz;
+        //check if shape2 Y-points are between shape1 Y-points
+        let hitY = function (shape1: Shape, shape2: Shape): boolean {
+            //shape1 y angle points
+            let ay1 = shape1.y;
+            let ay2 = shape1.y + shape1.height;
+            //shape2 y shape angle points
+            let by1 = shape2.y;
+            let by2 = shape2.y + shape2.height;
+
+            return (by1 >= ay1 && by1 <= ay2) || (by2 >= ay1 && by2 <= ay2);
+        };
+
+        return (hitX(this, shape) || hitX(shape, this)) && (hitY(this, shape) || hitY(shape, this));
     }
 
     //render shape rect borders for debug purposes
@@ -72,8 +76,8 @@ export abstract class ActiveShape extends Shape {
     ay: number = 1; //acceleration y
     dirX: Direction = Direction.RIGHT;
     dirY: Direction = Direction.DOWN;
-    isMovingX: boolean = false;
-    isMovingY: boolean = false;
+    protected isMovingX: boolean = false;
+    protected isMovingY: boolean = false;
 
     moveX(dir: Direction) {
         this.isMovingX = true;
