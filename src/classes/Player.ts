@@ -1,13 +1,13 @@
 import {ActiveShape} from "./Shape";
 import {App} from "./App";
-import {Map} from "./Map";
-import {Direction, WallType} from "../enums/index";
+import {Direction} from "../enums/index";
 import {Wall} from "./Wall";
 
 export class Player extends ActiveShape {
-    inAir: boolean = false;
     defaultVX: number = 8;
     defaultVY: number = 20;
+    isJumping: boolean = false;
+    inAir: boolean = false;
 
     constructor(x: number, y: number) {
         super(x, y - 79, 40, 78); // minus values to prevent walls collisions
@@ -22,10 +22,15 @@ export class Player extends ActiveShape {
 
     jump() {
         if (!this.inAir) {
+            this.isJumping = true;
             this.inAir = true;
             this.ay = 0.8;
             this.moveY(Direction.UP);
         }
+    }
+
+    stopJumping() {
+        this.isJumping = false;
     }
 
     fall() {
@@ -77,6 +82,7 @@ export class Player extends ActiveShape {
             if (this.inAir) {
                 if (this.dirY === Direction.DOWN) {
                     this.land(hittedWall);
+                    if (this.isJumping) this.jump();
                 } else if (this.dirY === Direction.UP) {
                     this.fall();
                 }

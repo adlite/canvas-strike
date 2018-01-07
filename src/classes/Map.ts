@@ -62,6 +62,9 @@ export class Map extends Shape {
         });
         document.body.addEventListener('keyup', (e) => {
             switch (e.keyCode) {
+                case Key.W:
+                    this.player1.stopJumping();
+                    break;
                 case Key.A:
                     this.player1.stopX();
                     break;
