@@ -118,8 +118,6 @@ export class Player extends ActiveShape {
             this.ay = 1;
         }
 
-        if (this.inAir) console.log(this.vy.toFixed(3));
-
         let headRadius = 16;
         let bodyHeight = 24;
 
