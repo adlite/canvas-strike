@@ -6,6 +6,7 @@ import {MapShape} from "./MapShape";
 import {Player} from "./Player";
 import {Settings} from "../settings";
 import {Direction, Key} from "../enums/index";
+import {Aim} from "./Aim";
 
 export class Map extends Shape {
     descr: IMapDescr;
@@ -42,6 +43,7 @@ export class Map extends Shape {
         let player2Y = this.grid.toPixels(this.descr.player2StartPos[1]);
         this.player1 = new Player(player1X, player1Y, this.shapes);
         this.player2 = new Player(player2X, player2Y, this.shapes);
+        this.player1.aim = new Aim();
     }
 
     private initHandlers() {

@@ -2,8 +2,11 @@ import {Shape} from "./Shape";
 import {Game} from "./Game";
 
 export class Aim extends Shape {
-    private mouseX: number = 0;
-    private mouseY: number = 0;
+    static readonly SCOPE_DISTANCE = 120;
+
+    mouseX: number = 0;
+    mouseY: number = 0;
+    inScope: boolean = false;
 
     constructor() {
         super(0, 0, 10, 10);
@@ -21,9 +24,23 @@ export class Aim extends Shape {
     }
 
     private calcRenderPos(originX: number, originY: number): void {
-        let cathX = this.mouseX - originX; //catheter X
-        let cathY = this.mouseY - originY; //catheter Y
-        let distance = Math.sqrt(Math.pow(cathX, 2) + Math.pow(cathY, 2));
+        let relMouseX = this.mouseX - originX;
+        let relMouseY = this.mouseY - originY;
+
+        //calc distance between origin and mouse pos using Pythagorean theorem
+        let distance = Math.sqrt(Math.pow(relMouseX, 2) + Math.pow(relMouseY, 2));
+        if (distance > Aim.SCOPE_DISTANCE) {
+            let ratio = distance / Aim.SCOPE_DISTANCE;
+            let relX = relMouseX / ratio;
+            let relY = relMouseY / ratio;
+            this.x = relX + originX;
+            this.y = relY + originY;
+            this.inScope = false;
+        } else {
+            this.x = this.mouseX;
+            this.y = this.mouseY;
+            this.inScope = true;
+        }
     }
 
     render(originX: number, originY: number) {

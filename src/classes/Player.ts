@@ -15,7 +15,8 @@ export class Player extends ActiveShape {
     static readonly HEAD_RADIUS: number = 10;
     static readonly BODY_HEIGHT: number = 28;
 
-    private aim: Aim = new Aim();
+    aim: Aim = null;
+
     private mapShapes: MapShape[] = [];
     private isJumping: boolean = false;
     private inAir: boolean = false;
@@ -205,7 +206,9 @@ export class Player extends ActiveShape {
     }
 
     private renderAim() {
-        this.aim.render(this.x + Player.HEAD_RADIUS, this.y + Player.HEAD_RADIUS);
+        if (this.aim !== null) {
+            this.aim.render(this.x + Player.HEAD_RADIUS, this.y + Player.HEAD_RADIUS);
+        }
     }
 
     render(): void {
