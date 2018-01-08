@@ -46,6 +46,7 @@ export class Map extends Shape {
 
     private initHandlers() {
         document.body.addEventListener('keydown', (e) => {
+            e.preventDefault();
             switch (e.keyCode) {
                 case Key.W:
                     this.player1.jump();
@@ -54,13 +55,27 @@ export class Map extends Shape {
                     this.player1.moveX(Direction.LEFT);
                     break;
                 case Key.S:
+                    this.player1.sit();
                     break;
                 case Key.D:
                     this.player1.moveX(Direction.RIGHT);
                     break;
+                case Key.UP:
+                    this.player2.jump();
+                    break;
+                case Key.LEFT:
+                    this.player2.moveX(Direction.LEFT);
+                    break;
+                case Key.DOWN:
+                    this.player2.standUp();
+                    break;
+                case Key.RIGHT:
+                    this.player2.moveX(Direction.RIGHT);
+                    break;
             }
         });
         document.body.addEventListener('keyup', (e) => {
+            e.preventDefault();
             switch (e.keyCode) {
                 case Key.W:
                     this.player1.stopJumping();
@@ -68,8 +83,23 @@ export class Map extends Shape {
                 case Key.A:
                     this.player1.stopX();
                     break;
+                case Key.S:
+                    this.player1.standUp();
+                    break;
                 case Key.D:
                     this.player1.stopX();
+                    break;
+                case Key.UP:
+                    this.player2.stopJumping();
+                    break;
+                case Key.LEFT:
+                    this.player2.stopX();
+                    break;
+                case Key.DOWN:
+                    this.player2.standUp();
+                    break;
+                case Key.RIGHT:
+                    this.player2.stopX();
                     break;
             }
         });

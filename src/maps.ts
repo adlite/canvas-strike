@@ -34,7 +34,7 @@ export let mapBox: IMapDescr = {
         {
             name: 'flying wall',
             type: WallType.HORIZONTAL,
-            cells: [23, 26, 6, 1]
+            cells: [23, 25, 6, 1]
         },
         {
             name: 'stairs wall fundament',
