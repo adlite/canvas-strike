@@ -2,6 +2,7 @@ import {ActiveShape} from "./Shape";
 import {Game} from "./Game";
 import {Direction, MapShapeType} from "../enums/index";
 import {MapShape} from "./MapShape";
+import {Aim} from "./Aim";
 
 export class Player extends ActiveShape {
     //constants
@@ -14,6 +15,7 @@ export class Player extends ActiveShape {
     static readonly HEAD_RADIUS: number = 10;
     static readonly BODY_HEIGHT: number = 28;
 
+    private aim: Aim = new Aim();
     private mapShapes: MapShape[] = [];
     private isJumping: boolean = false;
     private inAir: boolean = false;
@@ -22,7 +24,7 @@ export class Player extends ActiveShape {
     private nearestWall: MapShape = null; //cache nearest wall
 
     constructor(x: number, y: number, mapShapes: MapShape[]) {
-        super(x, y - 79, 40, 78); // minus values to prevent walls collisions
+        super(x, y - 79, 30, 78); // minus values to prevent walls collisions
         this.mapShapes = mapShapes;
         //props
         this.vx = Player.DEFAULT_VX;
@@ -139,38 +141,71 @@ export class Player extends ActiveShape {
         }
     }
 
+    private getSpineX(): number {
+        return this.dirX === Direction.RIGHT
+            ? this.x + Player.HEAD_RADIUS
+            : this.x + this.width - Player.HEAD_RADIUS;
+    }
+
     private renderHead() {
         Game.ctx.beginPath();
-        Game.ctx.arc(this.x + 20, this.y + Player.HEAD_RADIUS, Player.HEAD_RADIUS, 0, Math.PI * 2);
+        Game.ctx.arc(this.getSpineX(), this.y + Player.HEAD_RADIUS, Player.HEAD_RADIUS, 0, Math.PI * 2);
         Game.ctx.fill();
     }
 
     private renderBody() {
+        let x = this.getSpineX();
+
         Game.ctx.beginPath();
-        Game.ctx.moveTo(this.x + 20, this.y + Player.HEAD_RADIUS * 2);
-        Game.ctx.lineTo(this.x + 20, this.y + Player.HEAD_RADIUS * 2 + Player.BODY_HEIGHT);
+        Game.ctx.moveTo(x, this.y + Player.HEAD_RADIUS * 2);
+        Game.ctx.lineTo(x, this.y + Player.HEAD_RADIUS * 2 + Player.BODY_HEIGHT);
         Game.ctx.stroke();
     }
 
     private renderArms() {
+        let x = this.getSpineX();
+        let y = this.y + Player.HEAD_RADIUS * 2 + 10;
+        let cp1X = this.dirX === Direction.RIGHT ? x + 8 : x - 8;
+        let cp1Y = y - 1;
+        let cp2X = this.dirX === Direction.RIGHT ? x + 10 : x - 10;
+        let cp2Y = y - 1;
+        let endX = this.dirX === Direction.RIGHT ? x + 20 : x - 20;
+        let endY = y - 7;
+
         Game.ctx.beginPath();
-        Game.ctx.moveTo(this.x + 5, this.y + Player.HEAD_RADIUS * 2 + 10);
-        Game.ctx.lineTo(this.x + 35, this.y + Player.HEAD_RADIUS * 2 + 10);
+        Game.ctx.moveTo(x, y);
+        Game.ctx.bezierCurveTo(cp1X, cp1Y, cp2X, cp2Y, endX, endY);
         Game.ctx.stroke();
     }
 
     private renderLegs() {
+        let originX = this.dirX === Direction.RIGHT
+            ? this.x + Player.HEAD_RADIUS
+            : this.x + this.width - Player.HEAD_RADIUS;
+        let originY = this.y + Player.HEAD_RADIUS * 2 + Player.BODY_HEIGHT;
+
+        let cp1X = this.dirX === Direction.RIGHT ? originX + 14 : originX - 14;
+        let cp1Y = originY + 15;
+        let cp2X = this.dirX === Direction.RIGHT ? originX + 14 : originX - 14;
+        let cp2Y = originY + 17;
+        let endX = this.dirX === Direction.RIGHT ? originX + 14 : originX - 14;
+        let endY = this.y + this.height;
+
         // Left leg
         Game.ctx.beginPath();
-        Game.ctx.moveTo(this.x + 20, this.y + Player.HEAD_RADIUS * 2 + Player.BODY_HEIGHT);
-        Game.ctx.lineTo(this.x + 10, this.y + this.height);
+        Game.ctx.moveTo(originX, originY);
+        Game.ctx.lineTo(this.dirX === Direction.RIGHT ? this.x : this.x + this.width, endY);
         Game.ctx.stroke();
 
         // Right leg
         Game.ctx.beginPath();
-        Game.ctx.moveTo(this.x + 20, this.y + Player.HEAD_RADIUS * 2 + Player.BODY_HEIGHT);
-        Game.ctx.lineTo(this.x + 30, this.y + this.height);
+        Game.ctx.moveTo(originX, originY);
+        Game.ctx.bezierCurveTo(cp1X, cp1Y, cp2X, cp2Y, endX, endY);
         Game.ctx.stroke();
+    }
+
+    private renderAim() {
+        this.aim.render(this.x + Player.HEAD_RADIUS, this.y + Player.HEAD_RADIUS);
     }
 
     render(): void {
@@ -194,5 +229,6 @@ export class Player extends ActiveShape {
         this.renderBody();
         this.renderArms();
         this.renderLegs();
+        this.renderAim();
     }
 }
