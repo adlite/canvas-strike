@@ -1,4 +1,4 @@
-import {WallType} from "../enums/index";
+import {MapShapeType} from "../enums/index";
 
 export interface ISettings {
     canvasID: string;
@@ -13,11 +13,11 @@ export interface IMapDescr {
     name: string;
     player1StartPos: [number, number]; //x, y in grid evals
     player2StartPos: [number, number]; //x, y in grid evals
-    walls: IWallDescr[];
+    shapes: IMapShapeDescr[];
 }
 
-export interface IWallDescr {
+export interface IMapShapeDescr {
     name?: string; //for debug
-    type: WallType;
-    cells: [number, number, number, number];
+    type: MapShapeType;
+    cells: number[];
 }

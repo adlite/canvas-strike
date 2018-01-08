@@ -1,6 +1,9 @@
-export enum WallType {
-    VERTICAL,
-    HORIZONTAL
+export enum MapShapeType {
+    WALL,
+    BOX,
+    DOOR,
+    LEFT_LADDER_WALL,
+    RIGHT_LEDDER_WALL
 }
 
 export enum Direction {

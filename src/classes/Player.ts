@@ -1,7 +1,7 @@
 import {ActiveShape} from "./Shape";
 import {App} from "./App";
-import {Direction} from "../enums/index";
-import {Wall} from "./Wall";
+import {Direction, MapShapeType} from "../enums/index";
+import {MapShape} from "./MapShape";
 
 export class Player extends ActiveShape {
     //constants
@@ -14,14 +14,16 @@ export class Player extends ActiveShape {
     static readonly HEAD_RADIUS: number = 10;
     static readonly BODY_HEIGHT: number = 28;
 
-    isJumping: boolean = false;
-    inAir: boolean = false;
-    isSitting: boolean = false;
+    private mapShapes: MapShape[] = [];
+    private isJumping: boolean = false;
+    private inAir: boolean = false;
+    private isSitting: boolean = false;
     private isReadyToStandUp: boolean = false;
-    nearestWall: Wall = null; //cache nearest wall
+    private nearestWall: MapShape = null; //cache nearest wall
 
-    constructor(x: number, y: number) {
+    constructor(x: number, y: number, mapShapes: MapShape[]) {
         super(x, y - 79, 40, 78); // minus values to prevent walls collisions
+        this.mapShapes = mapShapes;
         //props
         this.vx = Player.DEFAULT_VX;
         this.vy = Player.DEFAULT_GRAVITY_VY;
@@ -53,7 +55,7 @@ export class Player extends ActiveShape {
         this.moveY(Direction.DOWN);
     }
 
-    land(onWall: Wall) {
+    land(onWall: MapShape) {
         this.inAir = false;
         this.stopY();
         this.y = onWall.y - this.height - 1;
@@ -81,13 +83,14 @@ export class Player extends ActiveShape {
         }
     }
 
-    private hitWalls(walls: Wall[]): boolean {
-        if (this.nearestWall !== null && this.nearestWall.hit(this)) {
+    //check wall hits in current state
+    private hitWalls(): boolean {
+        if (this.nearestWall !== null && (this.nearestWall.hit(this))) { //firstly checks in cache
             return true;
-        } else {
-            for (let wall of walls) {
-                if (wall.hit(this)) {
-                    this.nearestWall = wall;
+        }  else { //else checks all walls
+            for (let shape of this.mapShapes) {
+                if (shape.type !== MapShapeType.DOOR && shape.hit(this)) {
+                    this.nearestWall = shape;
                     return true;
                 }
             }
@@ -95,18 +98,18 @@ export class Player extends ActiveShape {
         return false;
     }
 
-    private checkWallsOnNextXStep(walls: Wall[]): void {
+    private checkWallsOnNextXStep(): void {
         this.setMovingX();
-        if (this.hitWalls(walls)) {
+        if (this.hitWalls()) {
             this.resetMovingX();
         }
     }
 
-    private checkWallsOnNextYStep(walls: Wall[]): void {
+    private checkWallsOnNextYStep(): void {
         //y++ is to check wall under player's feet while he is being on the ground
         this.inAir ? this.setMovingY() : this.y++;
 
-        if (this.hitWalls(walls)) {
+        if (this.hitWalls()) {
             this.resetMovingY();
             if (this.inAir) {
                 if (this.dirY === Direction.DOWN) {
@@ -126,10 +129,10 @@ export class Player extends ActiveShape {
         }
     }
 
-    private checkWallsOnNextStandUp(walls: Wall[]): void {
+    private checkWallsOnNextStandUp(): void {
         if (this.isReadyToStandUp && this.isSitting) {
             this.setStandUp();
-            if (this.hitWalls(walls)) {
+            if (this.hitWalls()) {
                 this.sit(); //sit again
                 this.isReadyToStandUp = true; //but remember that we wanna stand up
             }
@@ -170,13 +173,13 @@ export class Player extends ActiveShape {
         App.ctx.stroke();
     }
 
-    render(walls: Wall[]): void {
+    render(): void {
         super.render();
 
         //collisions
-        this.checkWallsOnNextXStep(walls);
-        this.checkWallsOnNextYStep(walls);
-        this.checkWallsOnNextStandUp(walls);
+        this.checkWallsOnNextXStep();
+        this.checkWallsOnNextYStep();
+        this.checkWallsOnNextStandUp();
 
         //gravity
         if (this.vy < 1 && this.dirY === Direction.UP) {
