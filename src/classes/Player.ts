@@ -17,7 +17,7 @@ export class Player extends ActiveShape {
     isJumping: boolean = false;
     inAir: boolean = false;
     isSitting: boolean = false;
-    isAbleToStandUp: boolean = true;
+    private isReadyToStandUp: boolean = false;
     nearestWall: Wall = null; //cache nearest wall
 
     constructor(x: number, y: number) {
@@ -63,13 +63,18 @@ export class Player extends ActiveShape {
     sit() {
         if (!this.isSitting) {
             this.isSitting = true;
+            this.isReadyToStandUp = false;
             this.y += Player.HEAD_RADIUS * 2;
             this.height -= Player.HEAD_RADIUS * 2;
         }
     }
 
     standUp() {
-        if (this.isSitting && this.isAbleToStandUp) {
+        this.isReadyToStandUp = true;
+    }
+
+    private setStandUp() {
+        if (this.isSitting) {
             this.isSitting = false;
             this.y -= Player.HEAD_RADIUS * 2;
             this.height += Player.HEAD_RADIUS * 2;
@@ -122,17 +127,11 @@ export class Player extends ActiveShape {
     }
 
     private checkWallsOnNextStandUp(walls: Wall[]): void {
-        let wasSitting = this.isSitting;
-
-        if (this.isSitting) {
-            this.isAbleToStandUp = true;
-            this.standUp();
-
+        if (this.isReadyToStandUp) {
+            this.setStandUp();
             if (this.hitWalls(walls)) {
-                this.isAbleToStandUp = false;
-                this.sit();
-            } else {
-                if (wasSitting) this.sit();
+                this.sit(); //sit again
+                this.isReadyToStandUp = true; //but remember that we wanna stand up
             }
         }
     }

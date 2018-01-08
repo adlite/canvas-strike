@@ -67,7 +67,7 @@ export class Map extends Shape {
                     this.player2.moveX(Direction.LEFT);
                     break;
                 case Key.DOWN:
-                    this.player2.standUp();
+                    this.player2.sit();
                     break;
                 case Key.RIGHT:
                     this.player2.moveX(Direction.RIGHT);
