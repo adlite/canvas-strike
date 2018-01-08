@@ -127,7 +127,7 @@ export class Player extends ActiveShape {
     }
 
     private checkWallsOnNextStandUp(walls: Wall[]): void {
-        if (this.isReadyToStandUp) {
+        if (this.isReadyToStandUp && this.isSitting) {
             this.setStandUp();
             if (this.hitWalls(walls)) {
                 this.sit(); //sit again
