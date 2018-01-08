@@ -8,7 +8,7 @@ import {ISettings} from "../interfaces/index";
 export class Game {
     static canvas: HTMLCanvasElement;
     static ctx: CanvasRenderingContext2D;
-    static loop: Loop = new Loop(() => Game.render(), Settings.fps);
+    static loop: Loop = new Loop(() => Game.render());
     static shapes: Shape[] = [];
     static settings: ISettings = Settings;
 

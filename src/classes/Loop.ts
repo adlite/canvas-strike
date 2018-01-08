@@ -1,8 +1,10 @@
+import {Settings} from "../settings";
+
 export class Loop {
     private intervalID: number = null;
     private allowToLog: boolean = false;
 
-    constructor(private renderFunc: () => void, public fps: number) {}
+    constructor(private renderFunc: () => void) {}
 
     log(...logs): void { //log once in renderFunc
         if (this.allowToLog) {
@@ -14,7 +16,8 @@ export class Loop {
     }
 
     start(): void {
-        this.intervalID = setInterval(() => this.renderFunc(), 1000 / this.fps);
+        if (this.intervalID !== null) clearInterval(this.intervalID);
+        this.intervalID = setInterval(() => this.renderFunc(), 1000 / Settings.fps);
         this.allowToLog = true;
     }
 
