@@ -1,11 +1,11 @@
 import {Shape} from "./Shape";
 import {IMapDescr} from "../interfaces/index";
 import {Grid} from "./Grid";
-import {App} from "./App";
+import {Game} from "./Game";
 import {MapShape} from "./MapShape";
 import {Player} from "./Player";
 import {Settings} from "../settings";
-import {Direction, Key, MapShapeType} from "../enums/index";
+import {Direction, Key} from "../enums/index";
 
 export class Map extends Shape {
     descr: IMapDescr;
@@ -15,7 +15,7 @@ export class Map extends Shape {
     grid: Grid = new Grid(Settings.gridSize);
 
     constructor(descr: IMapDescr) {
-        super(0, 0, App.canvas.width, App.canvas.height);
+        super(0, 0, Game.canvas.width, Game.canvas.height);
         this.descr = descr;
         this.createShapes();
         this.initHandlers();

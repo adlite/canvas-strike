@@ -1,5 +1,5 @@
 import {Shape} from "./Shape";
-import {App} from "./App";
+import {Game} from "./Game";
 import {MapShapeType} from "../enums";
 import {Grid} from "./Grid";
 
@@ -18,6 +18,6 @@ export class MapShape extends Shape {
 
     render() {
         super.render();
-        App.ctx.fillRect(this.x, this.y, this.width, this.height);
+        Game.ctx.fillRect(this.x, this.y, this.width, this.height);
     }
 }

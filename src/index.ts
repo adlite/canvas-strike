@@ -1,4 +1,5 @@
-import {App} from "./classes/App";
+import {Game} from "./classes/Game";
 
-window['CanvasStrike'] = App;
-new App();
+window['CanvasStrike'] = Game;
+Game.init();
+Game.start();

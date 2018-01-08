@@ -1,5 +1,5 @@
 import {ActiveShape} from "./Shape";
-import {App} from "./App";
+import {Game} from "./Game";
 import {Direction, MapShapeType} from "../enums/index";
 import {MapShape} from "./MapShape";
 
@@ -140,37 +140,37 @@ export class Player extends ActiveShape {
     }
 
     private renderHead() {
-        App.ctx.beginPath();
-        App.ctx.arc(this.x + 20, this.y + Player.HEAD_RADIUS, Player.HEAD_RADIUS, 0, Math.PI * 2);
-        App.ctx.fill();
+        Game.ctx.beginPath();
+        Game.ctx.arc(this.x + 20, this.y + Player.HEAD_RADIUS, Player.HEAD_RADIUS, 0, Math.PI * 2);
+        Game.ctx.fill();
     }
 
     private renderBody() {
-        App.ctx.beginPath();
-        App.ctx.moveTo(this.x + 20, this.y + Player.HEAD_RADIUS * 2);
-        App.ctx.lineTo(this.x + 20, this.y + Player.HEAD_RADIUS * 2 + Player.BODY_HEIGHT);
-        App.ctx.stroke();
+        Game.ctx.beginPath();
+        Game.ctx.moveTo(this.x + 20, this.y + Player.HEAD_RADIUS * 2);
+        Game.ctx.lineTo(this.x + 20, this.y + Player.HEAD_RADIUS * 2 + Player.BODY_HEIGHT);
+        Game.ctx.stroke();
     }
 
     private renderArms() {
-        App.ctx.beginPath();
-        App.ctx.moveTo(this.x + 5, this.y + Player.HEAD_RADIUS * 2 + 10);
-        App.ctx.lineTo(this.x + 35, this.y + Player.HEAD_RADIUS * 2 + 10);
-        App.ctx.stroke();
+        Game.ctx.beginPath();
+        Game.ctx.moveTo(this.x + 5, this.y + Player.HEAD_RADIUS * 2 + 10);
+        Game.ctx.lineTo(this.x + 35, this.y + Player.HEAD_RADIUS * 2 + 10);
+        Game.ctx.stroke();
     }
 
     private renderLegs() {
         // Left leg
-        App.ctx.beginPath();
-        App.ctx.moveTo(this.x + 20, this.y + Player.HEAD_RADIUS * 2 + Player.BODY_HEIGHT);
-        App.ctx.lineTo(this.x + 10, this.y + this.height);
-        App.ctx.stroke();
+        Game.ctx.beginPath();
+        Game.ctx.moveTo(this.x + 20, this.y + Player.HEAD_RADIUS * 2 + Player.BODY_HEIGHT);
+        Game.ctx.lineTo(this.x + 10, this.y + this.height);
+        Game.ctx.stroke();
 
         // Right leg
-        App.ctx.beginPath();
-        App.ctx.moveTo(this.x + 20, this.y + Player.HEAD_RADIUS * 2 + Player.BODY_HEIGHT);
-        App.ctx.lineTo(this.x + 30, this.y + this.height);
-        App.ctx.stroke();
+        Game.ctx.beginPath();
+        Game.ctx.moveTo(this.x + 20, this.y + Player.HEAD_RADIUS * 2 + Player.BODY_HEIGHT);
+        Game.ctx.lineTo(this.x + 30, this.y + this.height);
+        Game.ctx.stroke();
     }
 
     render(): void {

@@ -1,7 +1,7 @@
 import {IMapDescr} from "./interfaces/index";
 import {MapShapeType} from "./enums/index";
 
-export let mapBox: IMapDescr = {
+export let testBox: IMapDescr = {
     name: 'Test Box',
     player1StartPos: [4, 29],
     player2StartPos: [8, 29],

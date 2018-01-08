@@ -1,4 +1,4 @@
-import {App} from "./App";
+import {Game} from "./Game";
 import {Direction} from "../enums";
 
 export abstract class Shape {
@@ -52,20 +52,20 @@ export abstract class Shape {
     //render shape rect borders for debug purposes
     renderShapeRect(): void {
         //set debug styles
-        App.ctx.strokeStyle = 'red';
-        App.ctx.globalAlpha = 1;
-        App.ctx.lineWidth = 1;
-        App.ctx.lineCap = 'butt';
+        Game.ctx.strokeStyle = 'red';
+        Game.ctx.globalAlpha = 1;
+        Game.ctx.lineWidth = 1;
+        Game.ctx.lineCap = 'butt';
         //render shape
-        App.ctx.strokeRect(this.x, this.y, this.width, this.height);
+        Game.ctx.strokeRect(this.x, this.y, this.width, this.height);
     }
 
     render(...args): void {
-        App.ctx.strokeStyle = this.stroke;
-        App.ctx.fillStyle = this.fill;
-        App.ctx.globalAlpha = this.opacity;
-        App.ctx.lineWidth = this.lineWidth;
-        App.ctx.lineCap = this.lineCap;
+        Game.ctx.strokeStyle = this.stroke;
+        Game.ctx.fillStyle = this.fill;
+        Game.ctx.globalAlpha = this.opacity;
+        Game.ctx.lineWidth = this.lineWidth;
+        Game.ctx.lineCap = this.lineCap;
     }
 }
 
