@@ -2,7 +2,6 @@ import {ActiveShape} from "./Shape";
 import {Game} from "./Game";
 import {Direction, MapShapeType} from "../enums/index";
 import {MapShape} from "./MapShape";
-import {Aim} from "./Aim";
 
 export class Player extends ActiveShape {
     //constants
@@ -14,8 +13,6 @@ export class Player extends ActiveShape {
     static readonly MAX_GRAVITY_VY: number = 25;
     static readonly HEAD_RADIUS: number = 10;
     static readonly BODY_HEIGHT: number = 28;
-
-    aim: Aim = null;
 
     private mapShapes: MapShape[] = [];
     private isJumping: boolean = false;
@@ -205,12 +202,6 @@ export class Player extends ActiveShape {
         Game.ctx.stroke();
     }
 
-    private renderAim() {
-        if (this.aim !== null) {
-            this.aim.render(this.x + Player.HEAD_RADIUS, this.y + Player.HEAD_RADIUS);
-        }
-    }
-
     render(): void {
         super.render();
 
@@ -232,6 +223,5 @@ export class Player extends ActiveShape {
         this.renderBody();
         this.renderArms();
         this.renderLegs();
-        this.renderAim();
     }
 }
