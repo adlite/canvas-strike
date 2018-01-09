@@ -4,17 +4,21 @@ import {Settings} from "../settings";
 import {Map} from "./Map";
 import {testBox} from "../maps";
 import {ISettings} from "../interfaces/index";
+import {spriteData} from "../assets/sprite-data";
 
 export class Game {
     static canvas: HTMLCanvasElement;
     static ctx: CanvasRenderingContext2D;
     static loop: Loop = new Loop(() => Game.render());
     static shapes: Shape[] = [];
+    static sprite: HTMLImageElement;
+    static spriteLoaded: boolean = false;
     static settings: ISettings = Settings;
 
     static init(): void {
-        this.createDomNode();
-        this.createShapes();
+        Game.createDomNode();
+        Game.createShapes();
+        Game.loadSprite();
     }
 
     static start() {
@@ -43,6 +47,12 @@ export class Game {
         Game.shapes.push(
             new Map(testBox)
         );
+    }
+
+    private static loadSprite(): void {
+        Game.sprite = new Image();
+        Game.sprite.src = spriteData;
+        Game.sprite.onload = () => Game.spriteLoaded = true;
     }
 
     static clearCanvas(): void {

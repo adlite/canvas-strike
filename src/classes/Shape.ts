@@ -19,6 +19,16 @@ export abstract class Shape {
         this.height = height;
     }
 
+    //return x coordinates when ctx.scale(-1, 1)
+    getMirrorX(): number {
+        return Game.canvas.width - this.x - this.width;
+    }
+
+    //return y coordinates when ctx.scale(1, -1)
+    getMirrorY(): number {
+        return Game.canvas.height - this.y - this.height;
+    }
+
     //check if this shape is colliding with other
     hit(shape: Shape): boolean {
 
@@ -61,9 +71,8 @@ export abstract class Shape {
     }
 
     renderInMirror(renderFunc: () => void): void {
-        //mirrors shape X coords
         let oldX = this.x;
-        this.x = Game.canvas.width - this.x - this.width;
+        this.x = this.getMirrorX();
 
         Game.ctx.save();
         Game.ctx.translate(Game.canvas.width, 0);

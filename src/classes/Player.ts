@@ -2,6 +2,7 @@ import {ActiveShape} from "./Shape";
 import {Game} from "./Game";
 import {Direction, MapShapeType} from "../enums/index";
 import {MapShape} from "./MapShape";
+import {Ak47, Weapon} from "./Weapon";
 
 export class Player extends ActiveShape {
     //constants
@@ -21,10 +22,12 @@ export class Player extends ActiveShape {
     private isSitting: boolean = false;
     private isReadyToStandUp: boolean = false;
     private nearestWall: MapShape = null; //cache nearest wall
+    currWeapon: Weapon;
 
     constructor(x: number, y: number, mapShapes: MapShape[]) {
         super(x, y - 79, 30, 78); // minus values to prevent walls collisions
         this.mapShapes = mapShapes;
+        this.currWeapon = new Ak47();
         //props
         this.vx = Player.DEFAULT_VX;
         this.vy = Player.DEFAULT_GRAVITY_VY;
@@ -147,6 +150,7 @@ export class Player extends ActiveShape {
     }
 
     private renderHead() {
+        super.render();
         let spineX = this.getSpineX();
         //head outer circle
         Game.ctx.beginPath();
@@ -165,6 +169,7 @@ export class Player extends ActiveShape {
     }
 
     private renderBody() {
+        super.render();
         let x = this.getSpineX();
 
         Game.ctx.beginPath();
@@ -174,6 +179,7 @@ export class Player extends ActiveShape {
     }
 
     private renderArms() {
+        super.render();
         let x = this.getSpineX();
         let y = this.y + Player.HEAD_RADIUS * 2 + 10;
         let cp1X = x + 8;
@@ -190,6 +196,8 @@ export class Player extends ActiveShape {
     }
 
     private renderLegs() {
+        super.render();
+
         let originX = this.getSpineX();
         let originY = this.y + Player.HEAD_RADIUS * 2 + Player.BODY_HEIGHT;
 
@@ -235,6 +243,17 @@ export class Player extends ActiveShape {
         }
     }
 
+    private renderWeapon() {
+        let x = this.getSpineX();
+        let y = this.y + Player.HEAD_RADIUS * 2;
+
+        this.currWeapon.render(x, y);
+
+        if (this.dirX === Direction.LEFT) {
+            this.currWeapon.x = this.currWeapon.getMirrorX();
+        }
+    }
+
     render(): void {
         super.render();
 
@@ -251,12 +270,13 @@ export class Player extends ActiveShape {
             this.ay = 1;
         }
 
-        //render body parts
+        //body parts
         let renderBodyParts = () => {
             this.renderHead();
             this.renderBody();
             this.renderArms();
             this.renderLegs();
+            this.renderWeapon();
         };
 
         this.dirX === Direction.RIGHT ? renderBodyParts() : this.renderInMirror(renderBodyParts);

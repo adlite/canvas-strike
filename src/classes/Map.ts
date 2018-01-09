@@ -121,6 +121,8 @@ export class Map extends Shape {
         if (Settings.debugMode) {
             this.player1.renderShapeRect();
             this.player2.renderShapeRect();
+            this.player1.currWeapon.renderShapeRect();
+            this.player2.currWeapon.renderShapeRect();
         }
     }
 }

@@ -4,7 +4,7 @@ export let Settings: ISettings = {
     canvasID: 'canvas-strike',
     canvasWidth: 1000,
     canvasHeight: 600,
-    debugMode: false,
+    debugMode: true,
     gridSize: 20,
     fps: 40
 };
