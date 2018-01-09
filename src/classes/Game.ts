@@ -4,6 +4,7 @@ import {Settings} from "../settings";
 import {Map} from "./Map";
 import {testBox} from "../maps";
 import {ISettings} from "../interfaces/index";
+import {GameAim} from "./Aim";
 
 export class Game {
     static canvas: HTMLCanvasElement;
@@ -40,7 +41,10 @@ export class Game {
     }
 
     private static createShapes(): void {
-        Game.shapes.push(new Map(testBox));
+        Game.shapes.push(
+            new Map(testBox),
+            new GameAim()
+        );
     }
 
     static clearCanvas(): void {

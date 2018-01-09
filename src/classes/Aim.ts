@@ -1,8 +1,10 @@
 import {Shape} from "./Shape";
 import {Game} from "./Game";
 
-export class Aim extends Shape {
-    static readonly SCOPE_DISTANCE = 120;
+export abstract class Aim extends Shape {
+    protected abstract scopeDistance: number;
+    protected abstract lineLength: number;
+    protected abstract lineGap: number;
 
     mouseX: number = 0;
     mouseY: number = 0;
@@ -10,6 +12,9 @@ export class Aim extends Shape {
 
     constructor() {
         super(0, 0, 10, 10);
+        this.stroke = '#FFBF3E';
+        this.lineCap = 'round';
+        this.lineWidth = 3;
         this.initHandlers();
     }
 
@@ -29,8 +34,8 @@ export class Aim extends Shape {
 
         //calc distance between origin and mouse pos using Pythagorean theorem
         let distance = Math.sqrt(Math.pow(relMouseX, 2) + Math.pow(relMouseY, 2));
-        if (distance > Aim.SCOPE_DISTANCE) {
-            let ratio = distance / Aim.SCOPE_DISTANCE;
+        if (distance > this.scopeDistance && this.scopeDistance !== -1) {
+            let ratio = distance / this.scopeDistance;
             let relX = relMouseX / ratio;
             let relY = relMouseY / ratio;
             this.x = relX + originX;
@@ -46,11 +51,66 @@ export class Aim extends Shape {
     render(originX: number, originY: number) {
         super.render();
         this.calcRenderPos(originX, originY);
+    }
+}
 
-        Game.ctx.fillStyle = '#fff';
-        Game.ctx.fillRect(originX, originY, 3, 3);
+export class GunAim extends Aim {
+    protected scopeDistance: number = 120;
+    protected lineLength: number = 10;
+    protected lineGap: number = 5;
 
-        Game.ctx.fillStyle = 'red';
-        Game.ctx.fillRect(this.x, this.y, 5, 5);
+    render(originX: number, originY: number) {
+        super.render(originX, originY);
+
+        //left
+        Game.ctx.beginPath();
+        Game.ctx.moveTo(this.x - this.lineGap - this.lineLength, this.y);
+        Game.ctx.lineTo(this.x - this.lineGap, this.y);
+        Game.ctx.stroke();
+
+        //right
+        Game.ctx.beginPath();
+        Game.ctx.moveTo(this.x + this.lineGap + this.lineLength, this.y);
+        Game.ctx.lineTo(this.x + this.lineGap, this.y);
+        Game.ctx.stroke();
+
+        //top
+        Game.ctx.beginPath();
+        Game.ctx.moveTo(this.x, this.y - this.lineGap - this.lineLength);
+        Game.ctx.lineTo(this.x, this.y - this.lineGap);
+        Game.ctx.stroke();
+
+        //bottom
+        Game.ctx.beginPath();
+        Game.ctx.moveTo(this.x, this.y + this.lineGap + this.lineLength);
+        Game.ctx.lineTo(this.x, this.y + this.lineGap);
+        Game.ctx.stroke();
+    }
+}
+
+export class GameAim extends Aim {
+    protected scopeDistance: number = -1;
+    protected lineLength: number = 7;
+    protected lineGap: number = 0;
+
+    constructor() {
+        super();
+        this.lineWidth = 2;
+    }
+
+    render(originX: number, originY: number) {
+        super.render(originX, originY);
+
+        //left
+        Game.ctx.beginPath();
+        Game.ctx.moveTo(this.x - this.lineLength / 2, this.y  - this.lineLength / 2);
+        Game.ctx.lineTo(this.x + this.lineLength / 2, this.y + this.lineLength / 2);
+        Game.ctx.stroke();
+
+        //right
+        Game.ctx.beginPath();
+        Game.ctx.moveTo(this.x + this.lineLength / 2, this.y  - this.lineLength / 2);
+        Game.ctx.lineTo(this.x  - this.lineLength / 2, this.y + this.lineLength / 2);
+        Game.ctx.stroke();
     }
 }
