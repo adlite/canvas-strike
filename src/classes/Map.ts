@@ -107,15 +107,17 @@ export class Map extends Shape {
 
     render() {
         super.render();
-        if (Settings.debugMode) this.grid.render();
 
-        //render shapes
+        //grid
+        this.grid.render();
+
+        //shapes
         for (let shape of this.shapes) {
             shape.render();
             if (Settings.debugMode) shape.renderShapeRect();
         }
 
-        //render players
+        //players
         this.player1.render();
         this.player2.render();
         if (Settings.debugMode) {
