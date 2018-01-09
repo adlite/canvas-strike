@@ -6,6 +6,12 @@ export enum MapShapeType {
     RIGHT_LEDDER_WALL
 }
 
+export enum WeaponType {
+    AUTOMATIC,
+    SINGLE,
+    COLD_STEEL
+}
+
 export enum Direction {
     LEFT,
     RIGHT,
