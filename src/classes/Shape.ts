@@ -60,6 +60,21 @@ export abstract class Shape {
         Game.ctx.strokeRect(this.x, this.y, this.width, this.height);
     }
 
+    renderInMirror(renderFunc: () => void): void {
+        //mirrors shape X coords
+        let oldX = this.x;
+        this.x = Game.canvas.width - this.x - this.width;
+
+        Game.ctx.save();
+        Game.ctx.translate(Game.canvas.width, 0);
+        Game.ctx.scale(-1, 1);
+
+        renderFunc();
+
+        Game.ctx.restore();
+        this.x = oldX;
+    }
+
     render(...args): void {
         Game.ctx.strokeStyle = this.stroke;
         Game.ctx.fillStyle = this.fill;
