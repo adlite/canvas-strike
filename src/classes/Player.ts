@@ -6,6 +6,7 @@ import {MapShape} from "./MapShape";
 export class Player extends ActiveShape {
     //constants
     static readonly DEFAULT_VX: number = 8;
+    static readonly DEFAULT_SIT_VX: number = 4;
     static readonly DEFAULT_JUMP_VY: number = 20;
     static readonly DEFAULT_JUMP_AY: number = 0.82;
     static readonly DEFAULT_GRAVITY_VY: number = 6;
@@ -68,6 +69,7 @@ export class Player extends ActiveShape {
             this.isReadyToStandUp = false;
             this.y += Player.HEAD_RADIUS * 2;
             this.height -= Player.HEAD_RADIUS * 2;
+            this.vx = Player.DEFAULT_SIT_VX;
         }
     }
 
@@ -80,6 +82,7 @@ export class Player extends ActiveShape {
             this.isSitting = false;
             this.y -= Player.HEAD_RADIUS * 2;
             this.height += Player.HEAD_RADIUS * 2;
+            this.vx = Player.DEFAULT_VX;
         }
     }
 
@@ -144,9 +147,21 @@ export class Player extends ActiveShape {
     }
 
     private renderHead() {
+        let spineX = this.getSpineX();
+        //head outer circle
         Game.ctx.beginPath();
-        Game.ctx.arc(this.getSpineX(), this.y + Player.HEAD_RADIUS, Player.HEAD_RADIUS, 0, Math.PI * 2);
+        Game.ctx.arc(spineX, this.y + Player.HEAD_RADIUS, Player.HEAD_RADIUS, 0, Math.PI * 2);
         Game.ctx.fill();
+
+        //eyes
+        Game.ctx.save();
+        Game.ctx.beginPath();
+        Game.ctx.fillStyle = '#d5ceff';
+        Game.ctx.moveTo(spineX + Player.HEAD_RADIUS, this.y + 8);
+        Game.ctx.lineTo(spineX, this.y + 6);
+        Game.ctx.lineTo(spineX + Player.HEAD_RADIUS / 2, this.y + 12);
+        Game.ctx.fill();
+        Game.ctx.restore();
     }
 
     private renderBody() {
@@ -178,24 +193,46 @@ export class Player extends ActiveShape {
         let originX = this.getSpineX();
         let originY = this.y + Player.HEAD_RADIUS * 2 + Player.BODY_HEIGHT;
 
-        let cp1X = originX + 14;
-        let cp1Y = originY + 15;
-        let cp2X = originX + 14;
-        let cp2Y = originY + 17;
-        let endX = originX + 14;
-        let endY = this.y + this.height;
+        if (this.isSitting) {
+            let cp1X = originX + 14;
+            let cp1Y = originY - 15;
+            let cp2X = originX + 14;
+            let cp2Y = originY - 17;
+            let endX = originX + 14;
+            let endY = this.y + this.height;
 
-        // Left leg
-        Game.ctx.beginPath();
-        Game.ctx.moveTo(originX, originY);
-        Game.ctx.lineTo(this.x, endY);
-        Game.ctx.stroke();
+            // Left leg
+            Game.ctx.beginPath();
+            Game.ctx.moveTo(originX, originY);
+            Game.ctx.lineTo(originX - 2, endY);
+            Game.ctx.lineTo(this.x - 5, endY);
+            Game.ctx.stroke();
 
-        // Right leg
-        Game.ctx.beginPath();
-        Game.ctx.moveTo(originX, originY);
-        Game.ctx.bezierCurveTo(cp1X, cp1Y, cp2X, cp2Y, endX, endY);
-        Game.ctx.stroke();
+            // Right leg
+            Game.ctx.beginPath();
+            Game.ctx.moveTo(originX, originY);
+            Game.ctx.bezierCurveTo(cp1X, cp1Y, cp2X, cp2Y, endX, endY);
+            Game.ctx.stroke();
+        } else {
+            let cp1X = originX + 14;
+            let cp1Y = originY + 15;
+            let cp2X = originX + 14;
+            let cp2Y = originY + 17;
+            let endX = originX + 14;
+            let endY = this.y + this.height;
+
+            // Left leg
+            Game.ctx.beginPath();
+            Game.ctx.moveTo(originX, originY);
+            Game.ctx.lineTo(this.x, endY);
+            Game.ctx.stroke();
+
+            // Right leg
+            Game.ctx.beginPath();
+            Game.ctx.moveTo(originX, originY);
+            Game.ctx.bezierCurveTo(cp1X, cp1Y, cp2X, cp2Y, endX, endY);
+            Game.ctx.stroke();
+        }
     }
 
     render(): void {
@@ -222,6 +259,6 @@ export class Player extends ActiveShape {
             this.renderLegs();
         };
 
-        this.dirX === Direction.RIGHT ? renderBodyParts() : this.renderInMirror(() => renderBodyParts());
+        this.dirX === Direction.RIGHT ? renderBodyParts() : this.renderInMirror(renderBodyParts);
     }
 }
