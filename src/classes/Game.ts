@@ -9,7 +9,7 @@ import {spriteData} from "../assets/sprite-data";
 export class Game {
     static canvas: HTMLCanvasElement;
     static ctx: CanvasRenderingContext2D;
-    static loop: Loop = new Loop(() => Game.render());
+    static loop: Loop = new Loop(Game.render);
     static shapes: Shape[] = [];
     static sprite: HTMLImageElement;
     static spriteLoaded: boolean = false;

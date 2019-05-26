@@ -17,7 +17,7 @@ export class Loop {
 
     start(): void {
         if (this.intervalID !== null) clearInterval(this.intervalID);
-        this.intervalID = setInterval(() => this.renderFunc(), 1000 / Settings.fps);
+        this.intervalID = setInterval(this.renderFunc, 1000 / Settings.fps);
         this.allowToLog = true;
     }
 

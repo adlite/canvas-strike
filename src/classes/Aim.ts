@@ -19,7 +19,7 @@ export abstract class Aim extends Shape {
     }
 
     private initHandlers() {
-        document.body.addEventListener('mousemove', (e) => this.catchCursorPos(e));
+        document.body.addEventListener('mousemove', this.catchCursorPos);
     }
 
     private catchCursorPos(e: MouseEvent) {
